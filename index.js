@@ -77,6 +77,36 @@ function eztvapi (options) {
 
 			return stream;
 		}
+		
+		//Enable Search - Becasue it was missing....
+		getShows_Extended: function (page, query, callback) {
+			query = encodeURIComponent(query);
+			page = page || 1;
+			var uri = options.apiUrl + '/shows/' + page + '/?keywords=' +  query;
+			limitedRequest(uri, callback);
+		},
+		searchShows: function ( query ) {
+			var self = this;
+			var stream = through2.obj(function (chunk, enc, next) {
+				this.push(chunk);
+				next();
+			});
+			var currentPage = 1;
+			function fetchShows ( query ) {
+				self.getShows_Extended(currentPage, query, function (err, shows) {
+					currentPage += 1;
+					if (err) {
+						return stream.end();
+					}
+					shows.forEach(function (show) {
+						stream.write( show );
+					});
 
+					fetchShows( query );
+				});
+			}
+			fetchShows( query );
+			return stream;
+		}
 	};
 }
