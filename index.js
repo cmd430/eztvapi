@@ -76,7 +76,7 @@ function eztvapi (options) {
 			fetchShows();
 
 			return stream;
-		}
+		},
 		
 		//Enable Search - Becasue it was missing....
 		getShows_Extended: function (page, query, callback) {
@@ -107,6 +107,13 @@ function eztvapi (options) {
 			}
 			fetchShows( query );
 			return stream;
+		},
+		
+		//get slection because i created it....
+		getSelection: function (ids, callback) {	
+			//ids arw in format id,id,id
+			var uri = options.apiUrl + '/shows/select/' + ids;
+			limitedRequest(uri, callback);
 		}
 	};
 }
