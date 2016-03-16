@@ -36,9 +36,8 @@ function eztvapi (options) {
 
 	return {
 
-		getShows: function (page, callback) {
-			page = page || 1;
-			var uri = options.apiUrl + '/shows/' + page;
+		getShows: function (page, sort, genre, callback) {
+			var uri = options.apiUrl + '/shows/' + page + '?sort=' + sort + '&genre=' + genre;
 			limitedRequest(uri, callback);
 		},
 
@@ -110,9 +109,10 @@ function eztvapi (options) {
 		},
 		
 		//get slection because i created it....
-		getSelection: function (ids, callback) {	
+		getSelection: function (ids, sort, callback) {	
 			//ids arw in format id,id,id
-			var uri = options.apiUrl + '/shows/select/' + ids;
+			var sort = sort || '';
+			var uri = options.apiUrl + '/shows/select/' + ids + '?sort=' + sort;
 			limitedRequest(uri, callback);
 		}
 	};
